@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "./styles.css";
 import { RiAddCircleLine } from "react-icons/ri";
 import { FaUndo, FaCheck, FaTimes } from "react-icons/fa";
-const FingerNail = ({ setfn }) => {
+const FingerNail = ({ setfn, setf }) => {
   const [image, setImage] = useState(null);
   const [polygon, setPolygon] = useState([]);
   const [croppedImage, setCroppedImage] = useState(null);
@@ -10,67 +10,6 @@ const FingerNail = ({ setfn }) => {
   const [IsPred, setIsPred] = useState(false);
   const [Data, setData] = useState("");
   const canvasRef = useRef(null);
-
-  useEffect(() => {
-    if (image) {
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext("2d");
-      const x = image.width;
-      const y = image.height;
-      var displayWidth = 1000;
-      var displayHeight = 500;
-      ctx.canvas.width = displayWidth;
-      ctx.canvas.height = displayHeight;
-      // JavaScript code to calculate the position of the pop-up
-      const popup = document.querySelector(".canvas-container");
-      popup.style.position = "fixed";
-      popup.style.top = "50%";
-      popup.style.left = "50%";
-      popup.style.transform = "translate(-50%, -55%)"; // console.log("scale");
-      const comp1 = document.querySelector(".cropcomp1");
-      const comp2 = document.querySelector(".cropcomp3");
-      comp1.style.zIndex = 0;
-      comp2.style.zIndex = 0;
-      setPolygon([]);
-      drawImage();
-    }
-  }, [image]);
-
-  const loadImage = (input) => {
-    const file = input.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const img = new Image();
-        img.src = e.target.result;
-        img.onload = () => setImage(img);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const drawImage = () => {
-    if (image) {
-      const ctx = canvasRef.current.getContext("2d");
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-      const displayWidth = ctx.canvas.width;
-      const displayHeight = ctx.canvas.height;
-      ctx.drawImage(image, 0, 0, displayWidth, displayHeight);
-    }
-  };
-
-  const onCanvasClick = (event) => {
-    const rect = event.target.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    setPolygon((prevPolygon) => [...prevPolygon, { x, y }]);
-  };
-
-  useEffect(() => {
-    drawPoints();
-  }, [polygon]);
 
   const drawPoints = () => {
     if (image) {
@@ -116,6 +55,66 @@ const FingerNail = ({ setfn }) => {
     }
   };
 
+  const drawImage = () => {
+    if (image) {
+      const ctx = canvasRef.current.getContext("2d");
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+      const displayWidth = ctx.canvas.width;
+      const displayHeight = ctx.canvas.height;
+      ctx.drawImage(image, 0, 0, displayWidth, displayHeight);
+    }
+  };
+  useEffect(() => {
+    if (image) {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      // const x = image.width;
+      // const y = image.height;
+      var displayWidth = 1000;
+      var displayHeight = 500;
+      ctx.canvas.width = displayWidth;
+      ctx.canvas.height = displayHeight;
+      // JavaScript code to calculate the position of the pop-up
+      const popup = document.querySelector(".canvas-container");
+      popup.style.position = "fixed";
+      popup.style.top = "50%";
+      popup.style.left = "50%";
+      popup.style.transform = "translate(-50%, -55%)"; // console.log("scale");
+      const comp1 = document.querySelector(".cropcomp1");
+      const comp2 = document.querySelector(".cropcomp3");
+      comp1.style.zIndex = 0;
+      comp2.style.zIndex = 0;
+      setPolygon([]);
+      drawImage();
+    }
+  }, [image]);
+
+  const loadImage = (input) => {
+    const file = input.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const img = new Image();
+        img.src = e.target.result;
+        img.onload = () => setImage(img);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const onCanvasClick = (event) => {
+    const rect = event.target.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    setPolygon((prevPolygon) => [...prevPolygon, { x, y }]);
+  };
+
+  useEffect(() => {
+    drawPoints();
+  }, [polygon]);
+
   const isCloseToStart = (point) => {
     const start = polygon[0];
     const distance = Math.sqrt(
@@ -128,8 +127,8 @@ const FingerNail = ({ setfn }) => {
   // ... (previous code remains unchanged)
 
   const cropAndDisplayImage = () => {
-    const x = image.width;
-    const y = image.height;
+    // const x = image.width;
+    // const y = image.height;
     var displayWidth = 1000;
     var displayHeight = 500;
     // if (x > y) {
@@ -210,6 +209,14 @@ const FingerNail = ({ setfn }) => {
       .then((response) => response.json())
       .then((data) => {
         // Handle response from server
+        setf((prevData) => {
+          const newData = [...prevData];
+          newData[1] = data.cnn;
+          newData[4] = data.knn;
+          newData[7] = data.rf;
+          return newData;
+        });
+        setfn(true);
         displayPredictions(data);
         console.log(data);
       })
@@ -242,6 +249,7 @@ const FingerNail = ({ setfn }) => {
       " rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,rgba(0, 0, 0, 0.3) 0px 30px 60px -30px";
   };
   const clearpopup = () => {
+    setCroppedImage(null);
     setImage(null);
     const comp1 = document.querySelector(".cropcomp1");
     const comp2 = document.querySelector(".cropcomp3");
@@ -250,7 +258,6 @@ const FingerNail = ({ setfn }) => {
   };
   const Prediction = () => {
     if (!image && croppedImage && !IsPred) {
-      setfn(true);
       sendToServer(Data);
       setIsPred(true);
       const comp1 = document.querySelector(".cropcomp2");

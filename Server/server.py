@@ -158,7 +158,12 @@ def predict_palm():
 # /final route
 @app.route('/final', methods=['POST'])
 def predict_final():
-    pred=final_model.predict_proba([predictions])
+    data = request.json
+    arr = data['features']
+    float_elements = [float(element) for element in arr[:3]]
+    int_elements = [int(element) for element in arr[3:]]
+    features=float_elements + int_elements
+    pred=final_model.predict_proba([features])
     no="{:.2f}".format(pred[0][0]*100)
     yes="{:.2f}".format(pred[0][1]*100)
     return jsonify({'no':str(no), 'yes':str(yes)})

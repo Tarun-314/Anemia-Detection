@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "./styles.css";
 import { RiAddCircleLine } from "react-icons/ri";
 import { FaUndo, FaCheck, FaTimes } from "react-icons/fa";
-const Palm = ({ setpm }) => {
+const Palm = ({ setpm, setf }) => {
   const [image, setImage] = useState(null);
   const [polygon, setPolygon] = useState([]);
   const [croppedImage, setCroppedImage] = useState(null);
@@ -15,18 +15,14 @@ const Palm = ({ setpm }) => {
     if (image) {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
-      const x = image.width;
-      const y = image.height;
+      // const x = image.width;
+      // const y = image.height;
       var displayWidth = 1000;
       var displayHeight = 500;
       ctx.canvas.width = displayWidth;
       ctx.canvas.height = displayHeight;
       // JavaScript code to calculate the position of the pop-up
-      const popup = document.querySelector(".canvas-container");
-      popup.style.position = "fixed";
-      popup.style.top = "50%";
-      popup.style.left = "50%";
-      popup.style.transform = "translate(-89%, -55%)";
+
       const comp1 = document.querySelector(".cropcomp1");
       const comp2 = document.querySelector(".cropcomp2");
       comp1.style.zIndex = 0;
@@ -49,17 +45,6 @@ const Palm = ({ setpm }) => {
     }
   };
 
-  const drawImage = () => {
-    if (image) {
-      const ctx = canvasRef.current.getContext("2d");
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-      const displayWidth = ctx.canvas.width;
-      const displayHeight = ctx.canvas.height;
-      ctx.drawImage(image, 0, 0, displayWidth, displayHeight);
-    }
-  };
-
   const onCanvasClick = (event) => {
     const rect = event.target.getBoundingClientRect();
     const x = event.clientX - rect.left;
@@ -71,50 +56,6 @@ const Palm = ({ setpm }) => {
   useEffect(() => {
     drawPoints();
   }, [polygon]);
-
-  const drawPoints = () => {
-    if (image) {
-      const ctx = canvasRef.current.getContext("2d");
-      const radius = 2;
-      ctx.fillStyle = "red";
-
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      drawImage();
-
-      polygon.forEach((point) => {
-        ctx.beginPath();
-        ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
-        ctx.fill();
-      });
-
-      if (polygon.length > 1) {
-        ctx.beginPath();
-        ctx.moveTo(polygon[0].x, polygon[0].y);
-        polygon.forEach((point) => {
-          ctx.lineTo(point.x, point.y);
-        });
-        ctx.strokeStyle = "red";
-        ctx.stroke();
-      }
-
-      if (polygon.length > 2 && isCloseToStart(polygon[polygon.length - 1])) {
-        ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-        ctx.beginPath();
-        polygon.forEach((point, index) => {
-          if (index === 0) {
-            ctx.moveTo(point.x, point.y);
-          } else {
-            ctx.lineTo(point.x, point.y);
-          }
-        });
-        ctx.closePath();
-        ctx.fill();
-        setIsDone(true);
-        // Crop and display the resulting image
-        cropAndDisplayImage();
-      }
-    }
-  };
 
   const isCloseToStart = (point) => {
     const start = polygon[0];
@@ -128,8 +69,8 @@ const Palm = ({ setpm }) => {
   // ... (previous code remains unchanged)
 
   const cropAndDisplayImage = () => {
-    const x = image.width;
-    const y = image.height;
+    // const x = image.width;
+    // const y = image.height;
     var displayWidth = 1000;
     var displayHeight = 500;
     // if (x > y) {
@@ -197,6 +138,60 @@ const Palm = ({ setpm }) => {
 
     setCroppedImage(newImage);
   };
+  const drawPoints = () => {
+    if (image) {
+      const ctx = canvasRef.current.getContext("2d");
+      const radius = 2;
+      ctx.fillStyle = "red";
+
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      drawImage();
+
+      polygon.forEach((point) => {
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
+        ctx.fill();
+      });
+
+      if (polygon.length > 1) {
+        ctx.beginPath();
+        ctx.moveTo(polygon[0].x, polygon[0].y);
+        polygon.forEach((point) => {
+          ctx.lineTo(point.x, point.y);
+        });
+        ctx.strokeStyle = "red";
+        ctx.stroke();
+      }
+
+      if (polygon.length > 2 && isCloseToStart(polygon[polygon.length - 1])) {
+        ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+        ctx.beginPath();
+        polygon.forEach((point, index) => {
+          if (index === 0) {
+            ctx.moveTo(point.x, point.y);
+          } else {
+            ctx.lineTo(point.x, point.y);
+          }
+        });
+        ctx.closePath();
+        ctx.fill();
+        setIsDone(true);
+        // Crop and display the resulting image
+        cropAndDisplayImage();
+      }
+    }
+  };
+
+  const drawImage = () => {
+    if (image) {
+      const ctx = canvasRef.current.getContext("2d");
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+      const displayWidth = ctx.canvas.width;
+      const displayHeight = ctx.canvas.height;
+      ctx.drawImage(image, 0, 0, displayWidth, displayHeight);
+    }
+  };
 
   function sendToServer(dataURL) {
     // Send dataURL to server route /palm
@@ -210,6 +205,14 @@ const Palm = ({ setpm }) => {
       .then((response) => response.json())
       .then((data) => {
         // Handle response from server
+        setf((prevData) => {
+          const newData = [...prevData];
+          newData[2] = data.cnn;
+          newData[5] = data.knn;
+          newData[8] = data.rf;
+          return newData;
+        });
+        setpm(true);
         displayPredictions(data);
         console.log(data);
       })
@@ -255,7 +258,6 @@ const Palm = ({ setpm }) => {
       const comp1 = document.querySelector(".cropcomp3");
       comp1.style.boxShadow =
         "rgb(0, 255, 0) 0px 50px 100px -20px, rgb(0, 255, 0) 0px 30px 60px -30px";
-      setpm(true);
     }
   };
   const displayPredictions = (data) => {

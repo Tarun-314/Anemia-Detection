@@ -104,6 +104,7 @@ const AboutUs = () => {
                   <span>
                     <img
                       src={lkn}
+                      alt="linked In"
                       style={{
                         height: "25px",
                         marginLeft: "5px",
@@ -142,6 +143,7 @@ const AboutUs = () => {
                   <span>
                     <img
                       src={lkn}
+                      alt="linked In"
                       style={{
                         height: "25px",
                         marginLeft: "5px",
@@ -168,6 +170,7 @@ const AboutUs = () => {
                   Omkar{" "}
                   <span>
                     <img
+                      alt="linked In"
                       src={lkn}
                       style={{
                         height: "25px",
@@ -205,6 +208,7 @@ const AboutUs = () => {
                   Tarun{" "}
                   <span>
                     <img
+                      alt="linked In"
                       src={lkn}
                       style={{
                         height: "25px",

@@ -1,10 +1,10 @@
 import "./result.css";
-import img from "../../images/image.jpg";
+import rst from "../../images/image.jpg";
 const Result = ({ data }) => {
   return (
-    <div class="container">
+    <div class="frcontainer">
       <div class="image-section">
-        <img src={img} alt="Image Description" />
+        <img src={rst} alt="Resultimg" />
       </div>
       <div class="text-section">
         <h1>Final Results</h1>
@@ -42,7 +42,7 @@ const Result = ({ data }) => {
             To Know more about the Anemia click{" "}
             <span>
               <a
-                href="https://example.com"
+                href="https://en.wikipedia.org/wiki/Anemia"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ textDecoration: "none" }}

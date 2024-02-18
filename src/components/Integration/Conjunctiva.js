@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "./styles.css";
 import { RiAddCircleLine } from "react-icons/ri";
 import { FaUndo, FaCheck, FaTimes } from "react-icons/fa";
-const Conjunctiva = ({ setcj }) => {
+const Conjunctiva = ({ setcj, setf }) => {
   const [image, setImage] = useState(null);
   const [polygon, setPolygon] = useState([]);
   const [croppedImage, setCroppedImage] = useState(null);
@@ -10,67 +10,6 @@ const Conjunctiva = ({ setcj }) => {
   const [IsPred, setIsPred] = useState(false);
   const [Data, setData] = useState("");
   const canvasRef = useRef(null);
-
-  useEffect(() => {
-    if (image) {
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext("2d");
-      const x = image.width;
-      const y = image.height;
-      var displayWidth = 1000;
-      var displayHeight = 500;
-      ctx.canvas.width = displayWidth;
-      ctx.canvas.height = displayHeight;
-      // JavaScript code to calculate the position of the pop-up
-      const popup = document.querySelector(".canvas-container");
-      popup.style.position = "fixed";
-      popup.style.top = "50%";
-      popup.style.left = "50%";
-      popup.style.transform = "translate(-11.3%, -55%)"; // console.log("scale");
-      const comp1 = document.querySelector(".cropcomp3");
-      const comp2 = document.querySelector(".cropcomp2");
-      comp1.style.zIndex = 0;
-      comp2.style.zIndex = 0;
-      setPolygon([]);
-      drawImage();
-    }
-  }, [image]);
-
-  const loadImage = (input) => {
-    const file = input.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const img = new Image();
-        img.src = e.target.result;
-        img.onload = () => setImage(img);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const drawImage = () => {
-    if (image) {
-      const ctx = canvasRef.current.getContext("2d");
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-      const displayWidth = ctx.canvas.width;
-      const displayHeight = ctx.canvas.height;
-      ctx.drawImage(image, 0, 0, displayWidth, displayHeight);
-    }
-  };
-
-  const onCanvasClick = (event) => {
-    const rect = event.target.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    setPolygon((prevPolygon) => [...prevPolygon, { x, y }]);
-  };
-
-  useEffect(() => {
-    drawPoints();
-  }, [polygon]);
 
   const drawPoints = () => {
     if (image) {
@@ -116,6 +55,67 @@ const Conjunctiva = ({ setcj }) => {
     }
   };
 
+  const drawImage = () => {
+    if (image) {
+      const ctx = canvasRef.current.getContext("2d");
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+      const displayWidth = ctx.canvas.width;
+      const displayHeight = ctx.canvas.height;
+      ctx.drawImage(image, 0, 0, displayWidth, displayHeight);
+    }
+  };
+
+  useEffect(() => {
+    if (image) {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      // const x = image.width;
+      // const y = image.height;
+      var displayWidth = 1000;
+      var displayHeight = 500;
+      ctx.canvas.width = displayWidth;
+      ctx.canvas.height = displayHeight;
+      // JavaScript code to calculate the position of the pop-up
+      const popup = document.querySelector(".canvas-container");
+      popup.style.position = "fixed";
+      popup.style.top = "50%";
+      popup.style.left = "50%";
+      popup.style.transform = "translate(-11.3%, -55%)"; // console.log("scale");
+      const comp1 = document.querySelector(".cropcomp3");
+      const comp2 = document.querySelector(".cropcomp2");
+      comp1.style.zIndex = 0;
+      comp2.style.zIndex = 0;
+      setPolygon([]);
+      drawImage();
+    }
+  }, [image]);
+
+  const loadImage = (input) => {
+    const file = input.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const img = new Image();
+        img.src = e.target.result;
+        img.onload = () => setImage(img);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const onCanvasClick = (event) => {
+    const rect = event.target.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    setPolygon((prevPolygon) => [...prevPolygon, { x, y }]);
+  };
+
+  useEffect(() => {
+    drawPoints();
+  }, [polygon]);
+
   const isCloseToStart = (point) => {
     const start = polygon[0];
     const distance = Math.sqrt(
@@ -128,8 +128,8 @@ const Conjunctiva = ({ setcj }) => {
   // ... (previous code remains unchanged)
 
   const cropAndDisplayImage = () => {
-    const x = image.width;
-    const y = image.height;
+    // const x = image.width;
+    // const y = image.height;
     var displayWidth = 1000;
     var displayHeight = 500;
     // if (x > y) {
@@ -210,7 +210,14 @@ const Conjunctiva = ({ setcj }) => {
       .then((response) => response.json())
       .then((data) => {
         // Handle response from server
-
+        setf((prevData) => {
+          const newData = [...prevData];
+          newData[0] = data.cnn;
+          newData[3] = data.knn;
+          newData[6] = data.rf;
+          return newData;
+        });
+        setcj(true);
         displayPredictions(data);
         console.log(data);
       })
@@ -271,6 +278,7 @@ const Conjunctiva = ({ setcj }) => {
       " rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,rgba(0, 0, 0, 0.3) 0px 30px 60px -30px";
   };
   const clearpopup = () => {
+    setCroppedImage(null);
     setImage(null);
     const comp1 = document.querySelector(".cropcomp3");
     const comp2 = document.querySelector(".cropcomp2");
@@ -279,7 +287,6 @@ const Conjunctiva = ({ setcj }) => {
   };
   const Prediction = () => {
     if (!image && croppedImage && !IsPred) {
-      setcj(true);
       sendToServer(Data);
       setIsPred(true);
       const comp1 = document.querySelector(".cropcomp1");
@@ -342,9 +349,9 @@ const Conjunctiva = ({ setcj }) => {
       {IsPred && !image && croppedImage && (
         <div className="predictions ">
           <h3>Predictions</h3>
-          <h4 id="cnncj"></h4>
-          <h4 id="knncj"></h4>
-          <h4 id="rfcj"></h4>
+          <h4 id="cnncj">h</h4>
+          <h4 id="knncj">h</h4>
+          <h4 id="rfcj">h</h4>
         </div>
       )}
 
