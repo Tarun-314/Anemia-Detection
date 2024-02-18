@@ -1,0 +1,61 @@
+.navbar {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  position: fixed;
+  overflow: hidden;
+  background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* z-index: 1000; */
+  margin-bottom: auto;
+}
+
+.logo__id {
+  display: flex;
+  align-items: center;
+}
+
+.logo__id div {
+  padding: 5px;
+}
+
+.navcontent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1px;
+  line-height: 18px;
+}
+
+.page_routes ul {
+  display: flex;
+}
+
+.page_routes ul li a {
+  text-decoration: none;
+  color: black;
+}
+.page_routes ul li a:hover {
+  cursor: pointer;
+  color: #f72798;
+  transition: 0.3s;
+}
+.page_routes ul li {
+  padding: 1rem;
+  list-style-type: none;
+}
+
+.page_routes ul li:hover {
+  cursor: pointer;
+  color: #ff0000;
+  transition: 0.3s;
+}
+.pages {
+  margin-top: 60px;
+  flex: 1;
+  background-color: aliceblue;
+}

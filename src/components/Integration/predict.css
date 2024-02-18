@@ -1,0 +1,153 @@
+.predict {
+  height: calc(100vh - 60px);
+  width: 100vw;
+}
+.prediction {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: calc(100vh - 60px);
+  padding: 0px 0px 0px 0px;
+}
+.fpred {
+  /* width: 20vw; */
+  padding: 10px 30px; /* Padding */
+  align-items: center;
+  appearance: none;
+  background-color: #007bff;
+  border-radius: 4px;
+  border-width: 0;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #0056b3 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-flex;
+  /* font-family: "JetBrains Mono", monospace; */
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  text-decoration: none;
+  transition: box-shadow 0.15s, transform 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow, transform;
+  font-size: 18px;
+}
+
+.fpred:focus {
+  box-shadow: #0056b3 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #0056b3 0 -3px 0 inset;
+}
+
+.fpred:hover {
+  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #0056b3 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.fpred:active {
+  box-shadow: #0056b3 0 3px 7px inset;
+  transform: translateY(2px);
+}
+
+/* .fpred:hover:not(.paused) {
+  animation: glow 1.5s infinite alternate;
+} */
+
+.fbcont {
+  z-index: 99999;
+  transform: translate(-50%, -50%); /* Center the button */
+  position: absolute; /* Position the button relative to its closest positioned ancestor */
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh; /* Make the container cover the entire viewport */
+  backdrop-filter: blur(5px); /* Apply blur effect to the background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* Popup content */
+.popup-content {
+  background-color: #fff; /* White background */
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 500px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Popup heading */
+.popup-content h2 {
+  margin-top: 0;
+  font-size: 24px;
+}
+
+/* Popup paragraph */
+.popup-content p {
+  margin-bottom: 20px;
+}
+
+.npred {
+  position: absolute;
+  bottom: 20px;
+  left: 60%;
+  width: 20vw;
+  align-items: center;
+  appearance: none;
+  background-color: #fcfcfd;
+  border-radius: 4px;
+  border-width: 0;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: #36395a;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: "JetBrains Mono", monospace;
+  height: 48px;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: 14px;
+  padding-right: 14px;
+  text-align: left;
+  text-decoration: none;
+  transition: box-shadow 0.15s, transform 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow, transform;
+  font-size: 18px;
+}
+.npred:focus {
+  box-shadow: #d6d6e7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
+}
+
+.npred:hover {
+  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.npred:active {
+  box-shadow: #d6d6e7 0 3px 7px inset;
+  transform: translateY(2px);
+}
+
+.result {
+  height: calc(100vh - 60px);
+}

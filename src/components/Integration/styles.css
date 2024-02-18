@@ -1,0 +1,209 @@
+.cropcomp1 {
+  width: 265px;
+  height: 490px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  z-index: 1;
+  transition: box-shadow 0.7s ease;
+  margin-right: auto;
+  margin-left: auto;
+}
+.cropcomp2 {
+  width: 265px;
+  height: 490px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  transition: box-shadow 0.7s ease;
+  z-index: 1;
+  margin-right: auto;
+  margin-left: auto;
+}
+.cropcomp3 {
+  width: 265px;
+  height: 490px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  transition: box-shadow 0.7s ease;
+  z-index: 1;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.file-upload-box {
+  width: 224px;
+  height: 224px;
+  border: 2px dashed #272323;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 12px;
+  /* position: relative; */
+}
+
+.plus-icon {
+  font-size: 40px;
+  color: #000000;
+}
+
+/* Hide the file input */
+#file-input1 {
+  display: none;
+}
+#file-input2 {
+  display: none;
+}
+#file-input3 {
+  display: none;
+}
+
+.file-text {
+  margin-left: 10px;
+  font-size: 12px;
+  color: #000000;
+}
+.cropped-image {
+  width: 234px;
+  height: 234px;
+  border: 2px solid #242121;
+  border-radius: 12px;
+  position: relative;
+}
+.canvas-container {
+  width: 1000px;
+  height: 546px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 5px;
+  z-index: 9999;
+}
+.close-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  font-size: 30px;
+  color: red;
+  background-color: transparent;
+  border: none;
+}
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  bottom: 0px;
+}
+.btn1 {
+  cursor: pointer;
+  color: red;
+  background-color: transparent;
+  border: none;
+  font-size: 30px;
+  margin-left: 10px;
+}
+.btn2 {
+  cursor: pointer;
+  color: green;
+  background-color: transparent;
+  border: none;
+  font-size: 30px;
+  margin-right: 10px;
+}
+.btn3 {
+  cursor: pointer;
+  color: rgb(255, 0, 0);
+  background-color: transparent;
+  border: none;
+  font-size: 30px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+.predictions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 224px;
+}
+
+h3 {
+  align-self: center;
+}
+/* .pbtn { */
+/* background-color: #007bff; Blue background color */
+/* color: #fff; White text color */
+/* border: none; No border */
+
+/* } */
+
+/* .pbtn:hover { */
+/* background-color: #0056b3; Darker blue background color on hover */
+/* }  */
+.pbtn {
+  /* width: 20vw; */
+  padding: 10px 30px; /* Padding */
+  align-items: center;
+  appearance: none;
+  background-color: #007bff;
+  border-radius: 4px;
+  border-width: 0;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #0056b3 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-flex;
+  /* font-family: "JetBrains Mono", monospace; */
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  text-decoration: none;
+  transition: box-shadow 0.15s, transform 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow, transform;
+  font-size: 18px;
+}
+
+.pbtn:focus {
+  box-shadow: #0056b3 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #0056b3 0 -3px 0 inset;
+}
+
+.pbtn:hover {
+  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #0056b3 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.pbtn:active {
+  box-shadow: #0056b3 0 3px 7px inset;
+  transform: translateY(2px);
+}
