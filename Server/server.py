@@ -160,6 +160,7 @@ def predict_palm():
 def predict_final():
     data = request.json
     arr = data['features']
+    print(arr)
     float_elements = [float(element) for element in arr[:3]]
     int_elements = [int(element) for element in arr[3:]]
     features=float_elements + int_elements

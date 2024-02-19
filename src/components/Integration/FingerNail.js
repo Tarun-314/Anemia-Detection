@@ -75,12 +75,6 @@ const FingerNail = ({ setfn, setf }) => {
       var displayHeight = 500;
       ctx.canvas.width = displayWidth;
       ctx.canvas.height = displayHeight;
-      // JavaScript code to calculate the position of the pop-up
-      const popup = document.querySelector(".canvas-container");
-      popup.style.position = "fixed";
-      popup.style.top = "50%";
-      popup.style.left = "50%";
-      popup.style.transform = "translate(-50%, -55%)"; // console.log("scale");
       const comp1 = document.querySelector(".cropcomp1");
       const comp2 = document.querySelector(".cropcomp3");
       comp1.style.zIndex = 0;

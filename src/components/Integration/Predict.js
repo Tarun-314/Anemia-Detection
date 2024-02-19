@@ -83,6 +83,10 @@ const Predict = () => {
                 <button className="fpred" onClick={finalprediction}>
                   Predict
                 </button>
+                <p style={{ marginTop: "30px", marginBottom: "0" }}>
+                  <span style={{ color: "red" }}>Note:</span>Click and Hold on
+                  top right area to view previous predictions
+                </p>
               </div>
             </div>
           )}

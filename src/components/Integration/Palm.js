@@ -10,6 +10,8 @@ const Palm = ({ setpm, setf }) => {
   const [IsPred, setIsPred] = useState(false);
   const [Data, setData] = useState("");
   const canvasRef = useRef(null);
+  const div1Ref = useRef(null);
+  const div2Ref = useRef(null);
 
   useEffect(() => {
     if (image) {
@@ -21,8 +23,28 @@ const Palm = ({ setpm, setf }) => {
       var displayHeight = 500;
       ctx.canvas.width = displayWidth;
       ctx.canvas.height = displayHeight;
-      // JavaScript code to calculate the position of the pop-up
+      const div1 = div1Ref.current;
+      const div2 = div2Ref.current;
 
+      // Ensure both elements are available
+      if (div1 && div2) {
+        // Get bounding client rect of div1
+        const div1Rect = div1.getBoundingClientRect();
+        const marginRight = window.innerWidth - div1Rect.right;
+        console.log("Margin-right of div1:", marginRight);
+
+        // Get width of the window
+        const windowWidth = window.innerWidth;
+        console.log("Width of the window:", windowWidth);
+
+        // Calculate right property for div2 to center it relative to the right edge of the window
+        const div2Width = div2.offsetWidth;
+        const rightValue = (windowWidth - div2Width) / 2 - marginRight;
+        console.log("Calculated right value for div2:", rightValue);
+
+        // Set the calculated right property to div2
+        div2.style.right = rightValue + "px";
+      }
       const comp1 = document.querySelector(".cropcomp1");
       const comp2 = document.querySelector(".cropcomp2");
       comp1.style.zIndex = 0;
@@ -289,7 +311,7 @@ const Palm = ({ setpm, setf }) => {
     }
   };
   return (
-    <div className="cropcomp3" id="crop-container">
+    <div className="cropcomp3" id="crop-container" ref={div1Ref}>
       <h2>Palm</h2>
       {!image && !croppedImage && (
         <div
@@ -309,7 +331,7 @@ const Palm = ({ setpm, setf }) => {
         </div>
       )}
       {image && (
-        <div className="canvas-container" id="canvas-container">
+        <div className="canvas-container" id="canvas-container" ref={div2Ref}>
           <canvas
             ref={canvasRef}
             onClick={onCanvasClick}

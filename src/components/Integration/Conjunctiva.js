@@ -10,6 +10,8 @@ const Conjunctiva = ({ setcj, setf }) => {
   const [IsPred, setIsPred] = useState(false);
   const [Data, setData] = useState("");
   const canvasRef = useRef(null);
+  const div1Ref = useRef(null);
+  const div2Ref = useRef(null);
 
   const drawPoints = () => {
     if (image) {
@@ -77,11 +79,34 @@ const Conjunctiva = ({ setcj, setf }) => {
       ctx.canvas.width = displayWidth;
       ctx.canvas.height = displayHeight;
       // JavaScript code to calculate the position of the pop-up
-      const popup = document.querySelector(".canvas-container");
-      popup.style.position = "fixed";
-      popup.style.top = "50%";
-      popup.style.left = "50%";
-      popup.style.transform = "translate(-11.3%, -55%)"; // console.log("scale");
+      // Step 1: Get margin-left of div1
+      const div1 = div1Ref.current;
+      const div2 = div2Ref.current;
+
+      // Ensure both elements are available
+      if (div1 && div2) {
+        // Get bounding client rect of div1
+        const div1Rect = div1.getBoundingClientRect();
+        const marginLeft = div1Rect.left;
+        console.log("Margin-left of div1:", marginLeft);
+
+        // Get width of the window
+        const windowWidth = window.innerWidth;
+        console.log("Width of the window:", windowWidth);
+
+        // Calculate left property for div2 to center it within the window
+        const div2Width = div2.offsetWidth;
+        const leftValue = (windowWidth - div2Width) / 2 - marginLeft;
+        console.log("Calculated left value for div2:", leftValue);
+
+        // Set the calculated left property to div2
+        div2.style.left = leftValue + "px";
+      }
+      // const popup = document.querySelector(".canvas-container");
+      // popup.style.position = "fixed";
+      // popup.style.top = "50%";
+      // popup.style.left = "50%";
+      // popup.style.transform = "translate(-11.3%, -55%)"; // console.log("scale");
       const comp1 = document.querySelector(".cropcomp3");
       const comp2 = document.querySelector(".cropcomp2");
       comp1.style.zIndex = 0;
@@ -295,7 +320,7 @@ const Conjunctiva = ({ setcj, setf }) => {
     }
   };
   return (
-    <div className="cropcomp1" id="crop-container">
+    <div className="cropcomp1" id="crop-container1" ref={div1Ref}>
       <h2>Conjunctiva</h2>
       {!image && !croppedImage && (
         <div
@@ -315,7 +340,7 @@ const Conjunctiva = ({ setcj, setf }) => {
         </div>
       )}
       {image && (
-        <div className="canvas-container" id="canvas-container">
+        <div className="canvas-container" id="canvas-container" ref={div2Ref}>
           <canvas
             ref={canvasRef}
             onClick={onCanvasClick}

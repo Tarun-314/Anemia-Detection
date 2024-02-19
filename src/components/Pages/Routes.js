@@ -3,10 +3,11 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import Predict from "../Integration/Predict";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
-import BubbleChartIcon from "@mui/icons-material/BubbleChart";
+import { MdBubbleChart } from "react-icons/md";
 import Home from "./Home";
 import AboutUs from "./AboutUs";
 import "./routes.css";
+import HowToUse from "./HowToUse";
 const Routing = () => {
   const userSignOut = () => {
     signOut(auth)
@@ -22,7 +23,7 @@ const Routing = () => {
         <nav className="navbar">
           <div className="logo__id">
             <div className="logo">
-              <BubbleChartIcon style={{ fontSize: "50px", color: "#1D5B79" }} />
+              <MdBubbleChart style={{ fontSize: "50px", color: "#1D5B79" }} />
             </div>
             <div className="navcontent">
               <h3 style={{ fontWeight: "normal", fontSize: "1.5rem" }}>
@@ -49,13 +50,11 @@ const Routing = () => {
           </div>
         </nav>
         <div className="pages">
-          {/* <Switch> */}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/prediction" element={<Predict />} />
             <Route path="/about" element={<AboutUs />} />
-            <Route path="/howtouse">{/* <ContactUs /> */}</Route>
-            {/* </Switch> */}
+            <Route path="/howtouse" element={<HowToUse />}></Route>
           </Routes>
         </div>
       </div>
