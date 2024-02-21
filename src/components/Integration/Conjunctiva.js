@@ -412,9 +412,9 @@ const Conjunctiva = ({ setcj, setf }) => {
       {IsPred && !image && croppedImage && (
         <div className="predictions ">
           <h3>Predictions</h3>
-          <h4 id="cnncj">h</h4>
-          <h4 id="knncj">h</h4>
-          <h4 id="rfcj">h</h4>
+          <h4 id="cnncj">CNN</h4>
+          <h4 id="knncj">KNN</h4>
+          <h4 id="rfcj">RF</h4>
         </div>
       )}
 

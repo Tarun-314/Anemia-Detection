@@ -6,7 +6,7 @@ import imgcrp from "../../images/ImageCrop.png";
 import pred from "../../images/Predict.jpg";
 import rpt from "../../images/Repeat.jpg";
 import fpred from "../../images/FinalPredict.jpg";
-// import tutorial from "../../video/";
+import tutorial from "../../video/Tutorial.mp4";
 const HowToUse = () => {
   const instructionsRef = useRef(null);
   const [isMouseDown, setIsMouseDown] = useState(false);
@@ -176,14 +176,15 @@ const HowToUse = () => {
       </div>
       <div className="vbox">
         <div className="video">
-          {/* <video
+          <h2>Tutorial Video</h2>
+          <video
             src={tutorial}
             controls
             autoPlay={false}
             onPause={() => console.log("pause")}
             onPlay={() => console.log("play")}
             className="orgv"
-          /> */}
+          />
         </div>
         <div className="tips">
           <h2>Guidelines for Image Capture and Upload </h2>
