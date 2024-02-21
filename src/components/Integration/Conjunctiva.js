@@ -10,6 +10,7 @@ const Conjunctiva = ({ setcj, setf }) => {
   const [IsPred, setIsPred] = useState(false);
   const [Data, setData] = useState("");
   const canvasRef = useRef(null);
+  const canvasContRef = useRef(null);
   const div1Ref = useRef(null);
   const div2Ref = useRef(null);
 
@@ -69,13 +70,54 @@ const Conjunctiva = ({ setcj, setf }) => {
   };
 
   useEffect(() => {
+    const handleResize = () => {
+      if (image) {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext("2d");
+        // const x = image.width;
+        // const y = image.height;
+        const { clientWidth, clientHeight } = canvasContRef.current;
+        var displayWidth = clientWidth;
+        var displayHeight = clientHeight;
+        console.log("resize");
+        console.log(clientWidth);
+        console.log(clientHeight);
+        ctx.canvas.width = displayWidth;
+        ctx.canvas.height = displayHeight;
+        const div1 = div1Ref.current;
+        const div2 = div2Ref.current;
+
+        // Ensure both elements are available
+        if (div1 && div2) {
+          // Get bounding client rect of div1
+          const div1Rect = div1.getBoundingClientRect();
+          const marginLeft = div1Rect.left;
+          console.log("Margin-left of div1:", marginLeft);
+          div2.style.left = "-" + marginLeft + "px";
+          const windoheight = window.innerHeight;
+          const marginTop = 60 + (windoheight - 60 - 490) / 2;
+          div2.style.top = "-" + marginTop + "px";
+        }
+        setPolygon([]);
+        drawImage();
+      }
+    };
+
+    // Add event listener for resize
+    window.addEventListener("resize", handleResize);
+  }, [image]);
+
+  useEffect(() => {
     if (image) {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
       // const x = image.width;
       // const y = image.height;
-      var displayWidth = 1000;
-      var displayHeight = 500;
+      const { clientWidth, clientHeight } = canvasContRef.current;
+      var displayWidth = clientWidth;
+      var displayHeight = clientHeight;
+      console.log(clientWidth);
+      console.log(clientHeight);
       ctx.canvas.width = displayWidth;
       ctx.canvas.height = displayHeight;
       // JavaScript code to calculate the position of the pop-up
@@ -89,24 +131,12 @@ const Conjunctiva = ({ setcj, setf }) => {
         const div1Rect = div1.getBoundingClientRect();
         const marginLeft = div1Rect.left;
         console.log("Margin-left of div1:", marginLeft);
-
-        // Get width of the window
-        const windowWidth = window.innerWidth;
-        console.log("Width of the window:", windowWidth);
-
-        // Calculate left property for div2 to center it within the window
-        const div2Width = div2.offsetWidth;
-        const leftValue = (windowWidth - div2Width) / 2 - marginLeft;
-        console.log("Calculated left value for div2:", leftValue);
-
-        // Set the calculated left property to div2
-        div2.style.left = leftValue + "px";
+        div2.style.left = "-" + marginLeft + "px";
+        const windoheight = window.innerHeight;
+        const marginTop = 60 + (windoheight - 60 - 490) / 2;
+        div2.style.top = "-" + marginTop + "px";
       }
-      // const popup = document.querySelector(".canvas-container");
-      // popup.style.position = "fixed";
-      // popup.style.top = "50%";
-      // popup.style.left = "50%";
-      // popup.style.transform = "translate(-11.3%, -55%)"; // console.log("scale");
+
       const comp1 = document.querySelector(".cropcomp3");
       const comp2 = document.querySelector(".cropcomp2");
       comp1.style.zIndex = 0;
@@ -155,8 +185,10 @@ const Conjunctiva = ({ setcj, setf }) => {
   const cropAndDisplayImage = () => {
     // const x = image.width;
     // const y = image.height;
-    var displayWidth = 1000;
-    var displayHeight = 500;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    var displayWidth = ctx.canvas.width;
+    var displayHeight = ctx.canvas.height;
     // if (x > y) {
     //   const aspectRatio = x / y;
     //   displayWidth = 1000;
@@ -304,6 +336,7 @@ const Conjunctiva = ({ setcj, setf }) => {
   };
   const clearpopup = () => {
     setCroppedImage(null);
+    setIsDone(false);
     setImage(null);
     const comp1 = document.querySelector(".cropcomp3");
     const comp2 = document.querySelector(".cropcomp2");
@@ -340,13 +373,18 @@ const Conjunctiva = ({ setcj, setf }) => {
         </div>
       )}
       {image && (
-        <div className="canvas-container" id="canvas-container" ref={div2Ref}>
-          <canvas
-            ref={canvasRef}
-            onClick={onCanvasClick}
-            style={{ cursor: "crosshair" }}
-          ></canvas>
-          <div className="buttons-container">
+        <div className="canvas-center" ref={div2Ref}>
+          <div
+            className="canvas-container"
+            id="canvas-container"
+            ref={canvasContRef}
+          >
+            <canvas
+              ref={canvasRef}
+              onClick={onCanvasClick}
+              style={{ cursor: "crosshair" }}
+            ></canvas>
+
             <button onClick={undoLastPoint} className="btn1">
               <FaUndo />
             </button>
@@ -355,10 +393,10 @@ const Conjunctiva = ({ setcj, setf }) => {
                 <FaCheck />
               </button>
             )}
+            <button onClick={clearpopup} className="close-btn">
+              <FaTimes />
+            </button>
           </div>
-          <button onClick={clearpopup} className="close-btn">
-            <FaTimes />
-          </button>
         </div>
       )}
 

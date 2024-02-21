@@ -10,6 +10,9 @@ const FingerNail = ({ setfn, setf }) => {
   const [IsPred, setIsPred] = useState(false);
   const [Data, setData] = useState("");
   const canvasRef = useRef(null);
+  const canvasContRef = useRef(null);
+
+  const div2Ref = useRef(null);
 
   const drawPoints = () => {
     if (image) {
@@ -65,16 +68,61 @@ const FingerNail = ({ setfn, setf }) => {
       ctx.drawImage(image, 0, 0, displayWidth, displayHeight);
     }
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (image) {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext("2d");
+        // const x = image.width;
+        // const y = image.height;
+        const { clientWidth, clientHeight } = canvasContRef.current;
+        var displayWidth = clientWidth;
+        var displayHeight = clientHeight;
+        console.log("resize");
+        console.log(clientWidth);
+        console.log(clientHeight);
+        ctx.canvas.width = displayWidth;
+        ctx.canvas.height = displayHeight;
+        const div2 = div2Ref.current;
+
+        // Ensure both elements are available
+        if (div2) {
+          const windoheight = window.innerHeight;
+          const marginTop = 60 + (windoheight - 60 - 490) / 2;
+          div2.style.top = "-" + marginTop + "px";
+        }
+        setPolygon([]);
+        drawImage();
+      }
+    };
+
+    // Add event listener for resize
+    window.addEventListener("resize", handleResize);
+  }, [image]);
+
   useEffect(() => {
     if (image) {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
       // const x = image.width;
       // const y = image.height;
-      var displayWidth = 1000;
-      var displayHeight = 500;
+      const { clientWidth, clientHeight } = canvasContRef.current;
+      var displayWidth = clientWidth;
+      var displayHeight = clientHeight;
+      console.log(clientWidth);
+      console.log(clientHeight);
       ctx.canvas.width = displayWidth;
       ctx.canvas.height = displayHeight;
+
+      const div2 = div2Ref.current;
+
+      // Ensure both elements are available
+      if (div2) {
+        const windoheight = window.innerHeight;
+        const marginTop = 60 + (windoheight - 60 - 490) / 2;
+        div2.style.top = "-" + marginTop + "px";
+      }
       const comp1 = document.querySelector(".cropcomp1");
       const comp2 = document.querySelector(".cropcomp3");
       comp1.style.zIndex = 0;
@@ -123,8 +171,10 @@ const FingerNail = ({ setfn, setf }) => {
   const cropAndDisplayImage = () => {
     // const x = image.width;
     // const y = image.height;
-    var displayWidth = 1000;
-    var displayHeight = 500;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    var displayWidth = ctx.canvas.width;
+    var displayHeight = ctx.canvas.height;
     // if (x > y) {
     //   const aspectRatio = x / y;
     //   displayWidth = 1000;
@@ -245,6 +295,7 @@ const FingerNail = ({ setfn, setf }) => {
   const clearpopup = () => {
     setCroppedImage(null);
     setImage(null);
+    setIsDone(false);
     const comp1 = document.querySelector(".cropcomp1");
     const comp2 = document.querySelector(".cropcomp3");
     comp1.style.zIndex = 1;
@@ -310,13 +361,18 @@ const FingerNail = ({ setfn, setf }) => {
         </div>
       )}
       {image && (
-        <div className="canvas-container" id="canvas-container">
-          <canvas
-            ref={canvasRef}
-            onClick={onCanvasClick}
-            style={{ cursor: "crosshair" }}
-          ></canvas>
-          <div className="buttons-container">
+        <div className="canvas-center" ref={div2Ref}>
+          <div
+            className="canvas-container"
+            id="canvas-container"
+            ref={canvasContRef}
+          >
+            <canvas
+              ref={canvasRef}
+              onClick={onCanvasClick}
+              style={{ cursor: "crosshair" }}
+            ></canvas>
+
             <button onClick={undoLastPoint} className="btn1">
               <FaUndo />
             </button>
@@ -325,10 +381,10 @@ const FingerNail = ({ setfn, setf }) => {
                 <FaCheck />
               </button>
             )}
+            <button onClick={clearpopup} className="close-btn">
+              <FaTimes />
+            </button>
           </div>
-          <button onClick={clearpopup} className="close-btn">
-            <FaTimes />
-          </button>
         </div>
       )}
 

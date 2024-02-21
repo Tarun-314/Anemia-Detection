@@ -3,36 +3,112 @@
   flex-direction: column;
   height: calc(100vh - 60px);
   width: 100vw;
-  background-color: rgb(164, 255, 225);
-  padding: 5vh 5vw;
+  /* background-color: rgb(164, 255, 225); */
+  background-color: #ebf3f9;
+  padding: 3vh 5vw 0 5vw;
+  overflow: auto;
 }
+.scroll-container {
+  position: relative;
+  height: 50%;
+  display: flex;
+  padding: 0px 3.5vw;
+  background-color: #ebf3f9;
+  margin-bottom: 2vh;
+}
+
+.scroll-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  font-size: 3.5vw;
+  cursor: pointer;
+  z-index: 1;
+  clip-path: circle();
+  background-color: #ebf3f9;
+}
+
+.scroll-button.left {
+  left: 0.8vw;
+}
+
+.scroll-button.right {
+  right: 0.8vw;
+}
+
 .instructions {
   display: flex;
   flex-direction: row;
-  width: 100%;
-  height: 50%;
-  overflow-x: scroll;
-  background-color: bisque;
+  width: 100%; /* Adjust for the width of both buttons */
+  height: 100%;
+  overflow: hidden; /* Hide the scrollbar */
+  background-color: transparent;
+  border-radius: 25px;
 }
+
 .i-card {
   display: flex;
-  flex-direction: column;
-  margin: 15px;
+  flex-direction: row;
   position: relative;
-  min-width: 15vw;
-  height: auto;
-  background-color: rgb(255, 140, 0);
+  min-width: 100%;
+  height: 100%;
+  transition: min-width 0s ease; /* Transition opacity changes over 2 seconds */
+  /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+  rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; */
+  /* box-shadow: 0px 9px 30px 0px rgba(0, 0, 0, 1); */
+  /* From https://css.glass */
+  background: rgb(255, 255, 255);
+  border-radius: 25px;
+  backdrop-filter: blur(8.9px);
+  -webkit-backdrop-filter: blur(8.9px);
+}
+.leftbox {
+  height: 100%;
+  width: 30%;
+  display: flex;
+  justify-content: center;
+}
+.leftbox img {
+  height: 100%;
+  width: 100%;
+}
+.rightbox {
+  height: 100%;
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 .vbox {
   display: flex;
   flex-direction: row;
-  height: 50%;
+  height: auto;
+  gap: 20px;
 }
 .video {
-  width: 60%;
-  background-color: rgb(255, 255, 255);
+  height: 100%;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.orgv {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
 }
 .tips {
-  width: 40%;
-  background-color: rgb(255, 0, 0);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-left: 30px;
+  text-align: center;
+  width: 50%;
+  /* overflow-y: scroll; */
+}
+.tips ul {
+  text-align: left;
 }

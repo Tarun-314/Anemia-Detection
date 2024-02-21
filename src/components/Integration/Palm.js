@@ -10,8 +10,47 @@ const Palm = ({ setpm, setf }) => {
   const [IsPred, setIsPred] = useState(false);
   const [Data, setData] = useState("");
   const canvasRef = useRef(null);
+  const canvasContRef = useRef(null);
   const div1Ref = useRef(null);
   const div2Ref = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (image) {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext("2d");
+        // const x = image.width;
+        // const y = image.height;
+        const { clientWidth, clientHeight } = canvasContRef.current;
+        var displayWidth = clientWidth;
+        var displayHeight = clientHeight;
+        console.log("resize");
+        console.log(clientWidth);
+        console.log(clientHeight);
+        ctx.canvas.width = displayWidth;
+        ctx.canvas.height = displayHeight;
+        const div1 = div1Ref.current;
+        const div2 = div2Ref.current;
+
+        // Ensure both elements are available
+        if (div1 && div2) {
+          // Get bounding client rect of div1
+          const div1Rect = div1.getBoundingClientRect();
+          const marginRight = window.innerWidth - div1Rect.right;
+          div2.style.right = "-" + marginRight + "px";
+          console.log("Margin-right of div1:", marginRight);
+          const windoheight = window.innerHeight;
+          const marginTop = 60 + (windoheight - 60 - 490) / 2;
+          div2.style.top = "-" + marginTop + "px";
+        }
+        setPolygon([]);
+        drawImage();
+      }
+    };
+
+    // Add event listener for resize
+    window.addEventListener("resize", handleResize);
+  }, [image]);
 
   useEffect(() => {
     if (image) {
@@ -19,8 +58,11 @@ const Palm = ({ setpm, setf }) => {
       const ctx = canvas.getContext("2d");
       // const x = image.width;
       // const y = image.height;
-      var displayWidth = 1000;
-      var displayHeight = 500;
+      const { clientWidth, clientHeight } = canvasContRef.current;
+      var displayWidth = clientWidth;
+      var displayHeight = clientHeight;
+      console.log(clientWidth);
+      console.log(clientHeight);
       ctx.canvas.width = displayWidth;
       ctx.canvas.height = displayHeight;
       const div1 = div1Ref.current;
@@ -31,19 +73,11 @@ const Palm = ({ setpm, setf }) => {
         // Get bounding client rect of div1
         const div1Rect = div1.getBoundingClientRect();
         const marginRight = window.innerWidth - div1Rect.right;
+        div2.style.right = "-" + marginRight + "px";
         console.log("Margin-right of div1:", marginRight);
-
-        // Get width of the window
-        const windowWidth = window.innerWidth;
-        console.log("Width of the window:", windowWidth);
-
-        // Calculate right property for div2 to center it relative to the right edge of the window
-        const div2Width = div2.offsetWidth;
-        const rightValue = (windowWidth - div2Width) / 2 - marginRight;
-        console.log("Calculated right value for div2:", rightValue);
-
-        // Set the calculated right property to div2
-        div2.style.right = rightValue + "px";
+        const windoheight = window.innerHeight;
+        const marginTop = 60 + (windoheight - 60 - 490) / 2;
+        div2.style.top = "-" + marginTop + "px";
       }
       const comp1 = document.querySelector(".cropcomp1");
       const comp2 = document.querySelector(".cropcomp2");
@@ -93,8 +127,10 @@ const Palm = ({ setpm, setf }) => {
   const cropAndDisplayImage = () => {
     // const x = image.width;
     // const y = image.height;
-    var displayWidth = 1000;
-    var displayHeight = 500;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    var displayWidth = ctx.canvas.width;
+    var displayHeight = ctx.canvas.height;
     // if (x > y) {
     //   const aspectRatio = x / y;
     //   displayWidth = 1000;
@@ -267,7 +303,9 @@ const Palm = ({ setpm, setf }) => {
       " rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,rgba(0, 0, 0, 0.3) 0px 30px 60px -30px";
   };
   const clearpopup = () => {
+    setCroppedImage(null);
     setImage(null);
+    setIsDone(false);
     const comp1 = document.querySelector(".cropcomp1");
     const comp2 = document.querySelector(".cropcomp2");
     comp1.style.zIndex = 1;
@@ -331,13 +369,18 @@ const Palm = ({ setpm, setf }) => {
         </div>
       )}
       {image && (
-        <div className="canvas-container" id="canvas-container" ref={div2Ref}>
-          <canvas
-            ref={canvasRef}
-            onClick={onCanvasClick}
-            style={{ cursor: "crosshair" }}
-          ></canvas>
-          <div className="buttons-container">
+        <div className="canvas-center" ref={div2Ref}>
+          <div
+            className="canvas-container"
+            id="canvas-container"
+            ref={canvasContRef}
+          >
+            <canvas
+              ref={canvasRef}
+              onClick={onCanvasClick}
+              style={{ cursor: "crosshair" }}
+            ></canvas>
+
             <button onClick={undoLastPoint} className="btn1">
               <FaUndo />
             </button>
@@ -346,10 +389,10 @@ const Palm = ({ setpm, setf }) => {
                 <FaCheck />
               </button>
             )}
+            <button onClick={clearpopup} className="close-btn">
+              <FaTimes />
+            </button>
           </div>
-          <button onClick={clearpopup} className="close-btn">
-            <FaTimes />
-          </button>
         </div>
       )}
 
