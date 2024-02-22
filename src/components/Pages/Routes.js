@@ -8,6 +8,7 @@ import Home from "./Home";
 import AboutUs from "./AboutUs";
 import "./routes.css";
 import HowToUse from "./HowToUse";
+import History from "./History";
 const Routing = () => {
   const userSignOut = () => {
     signOut(auth)
@@ -45,6 +46,9 @@ const Routing = () => {
               <li>
                 <Link to="/about">About Us</Link>
               </li>
+              <li>
+                <Link to="/history">History</Link>
+              </li>
               <li onClick={userSignOut}>Sign Out</li>
             </ul>
           </div>
@@ -54,7 +58,8 @@ const Routing = () => {
             <Route path="/" element={<Home />} />
             <Route path="/prediction" element={<Predict />} />
             <Route path="/about" element={<AboutUs />} />
-            <Route path="/howtouse" element={<HowToUse />}></Route>
+            <Route path="/howtouse" element={<HowToUse />} />
+            <Route path="/history" element={<History />} />
           </Routes>
         </div>
       </div>

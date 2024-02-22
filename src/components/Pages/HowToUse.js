@@ -6,6 +6,7 @@ import imgcrp from "../../images/ImageCrop.png";
 import pred from "../../images/Predict.jpg";
 import rpt from "../../images/Repeat.jpg";
 import fpred from "../../images/FinalPredict.jpg";
+import tt from "../../images/Tutorial-Thumbnail.jpg";
 import tutorial from "../../video/Tutorial.mp4";
 const HowToUse = () => {
   const instructionsRef = useRef(null);
@@ -178,6 +179,7 @@ const HowToUse = () => {
         <div className="video">
           <h2>Tutorial Video</h2>
           <video
+            poster={tt}
             src={tutorial}
             controls
             autoPlay={false}

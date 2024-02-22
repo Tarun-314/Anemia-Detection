@@ -4,6 +4,7 @@ import SignUp from "./SignUp";
 import Routing from "../Pages/Routes";
 import React, { useEffect, useState } from "react";
 import { auth } from "../../firebase";
+import { setUserEmail } from "./UserEmail";
 
 const AuthDetails = () => {
   const [authUser, setAuthUser] = useState(null);
@@ -12,6 +13,8 @@ const AuthDetails = () => {
     const listen = onAuthStateChanged(auth, (user) => {
       if (user) {
         setAuthUser(user);
+        const userEmail = user.email; // Get user's email
+        setUserEmail(userEmail);
       } else {
         setAuthUser(null);
       }

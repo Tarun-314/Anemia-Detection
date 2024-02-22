@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "./styles.css";
 import { RiAddCircleLine } from "react-icons/ri";
 import { FaUndo, FaCheck, FaTimes } from "react-icons/fa";
-const Conjunctiva = ({ setcj, setf }) => {
+const Conjunctiva = ({ setcj, setf, setimg }) => {
   const [image, setImage] = useState(null);
   const [polygon, setPolygon] = useState([]);
   const [croppedImage, setCroppedImage] = useState(null);
@@ -267,6 +267,7 @@ const Conjunctiva = ({ setcj, setf }) => {
       .then((response) => response.json())
       .then((data) => {
         // Handle response from server
+        setimg(dataURL);
         setf((prevData) => {
           const newData = [...prevData];
           newData[0] = data.cnn;

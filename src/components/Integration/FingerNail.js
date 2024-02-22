@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "./styles.css";
 import { RiAddCircleLine } from "react-icons/ri";
 import { FaUndo, FaCheck, FaTimes } from "react-icons/fa";
-const FingerNail = ({ setfn, setf }) => {
+const FingerNail = ({ setfn, setf, setimg }) => {
   const [image, setImage] = useState(null);
   const [polygon, setPolygon] = useState([]);
   const [croppedImage, setCroppedImage] = useState(null);
@@ -166,8 +166,6 @@ const FingerNail = ({ setfn, setf }) => {
     return distance < 20;
   };
 
-  // ... (previous code remains unchanged)
-
   const cropAndDisplayImage = () => {
     // const x = image.width;
     // const y = image.height;
@@ -253,6 +251,7 @@ const FingerNail = ({ setfn, setf }) => {
       .then((response) => response.json())
       .then((data) => {
         // Handle response from server
+        setimg(dataURL);
         setf((prevData) => {
           const newData = [...prevData];
           newData[1] = data.cnn;

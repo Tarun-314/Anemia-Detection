@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "./styles.css";
 import { RiAddCircleLine } from "react-icons/ri";
 import { FaUndo, FaCheck, FaTimes } from "react-icons/fa";
-const Palm = ({ setpm, setf }) => {
+const Palm = ({ setpm, setf, setimg }) => {
   const [image, setImage] = useState(null);
   const [polygon, setPolygon] = useState([]);
   const [croppedImage, setCroppedImage] = useState(null);
@@ -262,6 +262,7 @@ const Palm = ({ setpm, setf }) => {
     })
       .then((response) => response.json())
       .then((data) => {
+        setimg(dataURL);
         // Handle response from server
         setf((prevData) => {
           const newData = [...prevData];

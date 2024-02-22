@@ -98,21 +98,23 @@ const AboutUs = () => {
               }}
             >
               <img src={shm} alt="shyam"></img>
-              <a href="https://www.linkedin.com/in/shyam-agarwal-27aa3a253/">
+              <a
+                href="https://www.linkedin.com/in/shyam-agarwal-27aa3a253/"
+                target="_blank"
+              >
                 <h3>
                   Shyam
-                  <span>
-                    <img
-                      src={lkn}
-                      alt="linked In"
-                      style={{
-                        height: "25px",
-                        marginLeft: "5px",
-                        clipPath: "none",
-                        width: "auto",
-                      }}
-                    ></img>
-                  </span>
+                  <img
+                    src={lkn}
+                    alt="linked In"
+                    style={{
+                      height: "20px",
+                      marginTop: "5px",
+                      marginLeft: "5px",
+                      clipPath: "none",
+                      width: "20px",
+                    }}
+                  ></img>
                 </h3>
               </a>
             </div>
@@ -137,21 +139,23 @@ const AboutUs = () => {
               }}
             >
               <img src={snk} alt="Shashank"></img>
-              <a href="https://www.linkedin.com/in/saisashankenuganti/">
+              <a
+                href="https://www.linkedin.com/in/saisashankenuganti/"
+                target="_blank"
+              >
                 <h3>
                   Sashank{" "}
-                  <span>
-                    <img
-                      src={lkn}
-                      alt="linked In"
-                      style={{
-                        height: "25px",
-                        marginLeft: "5px",
-                        clipPath: "none",
-                        width: "auto",
-                      }}
-                    ></img>
-                  </span>
+                  <img
+                    src={lkn}
+                    alt="linked In"
+                    style={{
+                      height: "20px",
+                      marginTop: "5px",
+                      marginLeft: "5px",
+                      clipPath: "none",
+                      width: "20px",
+                    }}
+                  ></img>
                 </h3>
               </a>
             </div>
@@ -165,21 +169,23 @@ const AboutUs = () => {
               }}
             >
               <img src={omk} alt="Omkar"></img>
-              <a href="https://www.linkedin.com/in/omkar-gardas-099809217/">
+              <a
+                href="https://www.linkedin.com/in/omkar-gardas-099809217/"
+                target="_blank"
+              >
                 <h3>
                   Omkar{" "}
-                  <span>
-                    <img
-                      alt="linked In"
-                      src={lkn}
-                      style={{
-                        height: "25px",
-                        marginLeft: "5px",
-                        clipPath: "none",
-                        width: "auto",
-                      }}
-                    ></img>
-                  </span>
+                  <img
+                    alt="linked In"
+                    src={lkn}
+                    style={{
+                      height: "20px",
+                      marginTop: "5px",
+                      marginLeft: "5px",
+                      clipPath: "none",
+                      width: "20px",
+                    }}
+                  ></img>
                 </h3>
               </a>
             </div>
@@ -203,21 +209,23 @@ const AboutUs = () => {
               }}
             >
               <img src={trn} alt="Traun"></img>
-              <a href="https://www.linkedin.com/in/tarun-kumar-talloju">
+              <a
+                href="https://www.linkedin.com/in/tarun-kumar-talloju"
+                target="_blank"
+              >
                 <h3>
                   Tarun{" "}
-                  <span>
-                    <img
-                      alt="linked In"
-                      src={lkn}
-                      style={{
-                        height: "25px",
-                        marginLeft: "5px",
-                        clipPath: "none",
-                        width: "auto",
-                      }}
-                    ></img>
-                  </span>
+                  <img
+                    alt="linked In"
+                    src={lkn}
+                    style={{
+                      height: "20px",
+                      marginTop: "5px",
+                      marginLeft: "5px",
+                      clipPath: "none",
+                      width: "20px",
+                    }}
+                  ></img>
                 </h3>
               </a>
             </div>
