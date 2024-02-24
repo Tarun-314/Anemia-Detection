@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import Predict from "../Integration/Predict";

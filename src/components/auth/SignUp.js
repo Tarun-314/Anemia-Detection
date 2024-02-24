@@ -1,11 +1,12 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { auth } from "../../firebase";
 import "./Auth.css";
 const SignUp = ({ updateState }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const showErrmsg = useRef(null);
 
   const signUp = (e) => {
     e.preventDefault();
@@ -14,7 +15,16 @@ const SignUp = ({ updateState }) => {
         console.log(userCredential);
       })
       .catch((error) => {
-        console.log(error);
+        showErrmsg.current.textContent = error.message;
+        showErrmsg.current.style.width = "auto";
+        showErrmsg.current.style.height = "auto";
+        showErrmsg.current.style.padding = "0.5rem 1.5rem";
+        setTimeout(() => {
+          showErrmsg.current.style.width = "0px";
+          showErrmsg.current.style.height = "0px";
+          showErrmsg.current.style.padding = "0";
+          showErrmsg.current.textContent = "";
+        }, 4000);
       });
   };
 
@@ -55,7 +65,7 @@ const SignUp = ({ updateState }) => {
       </div>
       <div className="input-submit">
         <button className="submit-btn" id="submit" onClick={signUp}></button>
-        <label>Sign Up</label>
+        <label onClick={signUp}>Sign Up</label>
       </div>
       <div className="sign-up-link">
         <p>Already have account? </p>
@@ -63,6 +73,7 @@ const SignUp = ({ updateState }) => {
           Sign In
         </p>
       </div>
+      <div className="errormsg" ref={showErrmsg}></div>
     </div>
   );
 };

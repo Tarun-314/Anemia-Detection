@@ -101,6 +101,7 @@ const AboutUs = () => {
               <a
                 href="https://www.linkedin.com/in/shyam-agarwal-27aa3a253/"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 <h3>
                   Shyam
@@ -142,6 +143,7 @@ const AboutUs = () => {
               <a
                 href="https://www.linkedin.com/in/saisashankenuganti/"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 <h3>
                   Sashank{" "}
@@ -172,6 +174,7 @@ const AboutUs = () => {
               <a
                 href="https://www.linkedin.com/in/omkar-gardas-099809217/"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 <h3>
                   Omkar{" "}
@@ -212,6 +215,7 @@ const AboutUs = () => {
               <a
                 href="https://www.linkedin.com/in/tarun-kumar-talloju"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 <h3>
                   Tarun{" "}

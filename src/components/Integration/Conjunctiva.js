@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import "./styles.css";
 import { RiAddCircleLine } from "react-icons/ri";
 import { FaUndo, FaCheck, FaTimes } from "react-icons/fa";
@@ -14,51 +14,7 @@ const Conjunctiva = ({ setcj, setf, setimg }) => {
   const div1Ref = useRef(null);
   const div2Ref = useRef(null);
 
-  const drawPoints = () => {
-    if (image) {
-      const ctx = canvasRef.current.getContext("2d");
-      const radius = 2;
-      ctx.fillStyle = "red";
-
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      drawImage();
-
-      polygon.forEach((point) => {
-        ctx.beginPath();
-        ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
-        ctx.fill();
-      });
-
-      if (polygon.length > 1) {
-        ctx.beginPath();
-        ctx.moveTo(polygon[0].x, polygon[0].y);
-        polygon.forEach((point) => {
-          ctx.lineTo(point.x, point.y);
-        });
-        ctx.strokeStyle = "red";
-        ctx.stroke();
-      }
-
-      if (polygon.length > 2 && isCloseToStart(polygon[polygon.length - 1])) {
-        ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-        ctx.beginPath();
-        polygon.forEach((point, index) => {
-          if (index === 0) {
-            ctx.moveTo(point.x, point.y);
-          } else {
-            ctx.lineTo(point.x, point.y);
-          }
-        });
-        ctx.closePath();
-        ctx.fill();
-        setIsDone(true);
-        // Crop and display the resulting image
-        cropAndDisplayImage();
-      }
-    }
-  };
-
-  const drawImage = () => {
+  const drawImage = useCallback(() => {
     if (image) {
       const ctx = canvasRef.current.getContext("2d");
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -67,122 +23,20 @@ const Conjunctiva = ({ setcj, setf, setimg }) => {
       const displayHeight = ctx.canvas.height;
       ctx.drawImage(image, 0, 0, displayWidth, displayHeight);
     }
-  };
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (image) {
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext("2d");
-        // const x = image.width;
-        // const y = image.height;
-        const { clientWidth, clientHeight } = canvasContRef.current;
-        var displayWidth = clientWidth;
-        var displayHeight = clientHeight;
-        console.log("resize");
-        console.log(clientWidth);
-        console.log(clientHeight);
-        ctx.canvas.width = displayWidth;
-        ctx.canvas.height = displayHeight;
-        const div1 = div1Ref.current;
-        const div2 = div2Ref.current;
-
-        // Ensure both elements are available
-        if (div1 && div2) {
-          // Get bounding client rect of div1
-          const div1Rect = div1.getBoundingClientRect();
-          const marginLeft = div1Rect.left;
-          console.log("Margin-left of div1:", marginLeft);
-          div2.style.left = "-" + marginLeft + "px";
-          const windoheight = window.innerHeight;
-          const marginTop = 60 + (windoheight - 60 - 490) / 2;
-          div2.style.top = "-" + marginTop + "px";
-        }
-        setPolygon([]);
-        drawImage();
-      }
-    };
-
-    // Add event listener for resize
-    window.addEventListener("resize", handleResize);
   }, [image]);
 
-  useEffect(() => {
-    if (image) {
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext("2d");
-      // const x = image.width;
-      // const y = image.height;
-      const { clientWidth, clientHeight } = canvasContRef.current;
-      var displayWidth = clientWidth;
-      var displayHeight = clientHeight;
-      console.log(clientWidth);
-      console.log(clientHeight);
-      ctx.canvas.width = displayWidth;
-      ctx.canvas.height = displayHeight;
-      // JavaScript code to calculate the position of the pop-up
-      // Step 1: Get margin-left of div1
-      const div1 = div1Ref.current;
-      const div2 = div2Ref.current;
+  const isCloseToStart = useCallback(
+    (point) => {
+      const start = polygon[0];
+      const distance = Math.sqrt(
+        (point.x - start.x) ** 2 + (point.y - start.y) ** 2
+      );
 
-      // Ensure both elements are available
-      if (div1 && div2) {
-        // Get bounding client rect of div1
-        const div1Rect = div1.getBoundingClientRect();
-        const marginLeft = div1Rect.left;
-        console.log("Margin-left of div1:", marginLeft);
-        div2.style.left = "-" + marginLeft + "px";
-        const windoheight = window.innerHeight;
-        const marginTop = 60 + (windoheight - 60 - 490) / 2;
-        div2.style.top = "-" + marginTop + "px";
-      }
-
-      const comp1 = document.querySelector(".cropcomp3");
-      const comp2 = document.querySelector(".cropcomp2");
-      comp1.style.zIndex = 0;
-      comp2.style.zIndex = 0;
-      setPolygon([]);
-      drawImage();
-    }
-  }, [image]);
-
-  const loadImage = (input) => {
-    const file = input.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const img = new Image();
-        img.src = e.target.result;
-        img.onload = () => setImage(img);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const onCanvasClick = (event) => {
-    const rect = event.target.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    setPolygon((prevPolygon) => [...prevPolygon, { x, y }]);
-  };
-
-  useEffect(() => {
-    drawPoints();
-  }, [polygon]);
-
-  const isCloseToStart = (point) => {
-    const start = polygon[0];
-    const distance = Math.sqrt(
-      (point.x - start.x) ** 2 + (point.y - start.y) ** 2
-    );
-
-    return distance < 20;
-  };
-
-  // ... (previous code remains unchanged)
-
-  const cropAndDisplayImage = () => {
+      return distance < 20;
+    },
+    [polygon]
+  );
+  const cropAndDisplayImage = useCallback(() => {
     // const x = image.width;
     // const y = image.height;
     const canvas = canvasRef.current;
@@ -253,6 +107,152 @@ const Conjunctiva = ({ setcj, setf, setimg }) => {
     newImage.src = newCanvas2.toDataURL("image/png");
 
     setCroppedImage(newImage);
+  }, [image, polygon]);
+
+  const drawPoints = useCallback(() => {
+    if (image) {
+      const ctx = canvasRef.current.getContext("2d");
+      const radius = 2;
+      ctx.fillStyle = "red";
+
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      drawImage();
+
+      polygon.forEach((point) => {
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
+        ctx.fill();
+      });
+
+      if (polygon.length > 1) {
+        ctx.beginPath();
+        ctx.moveTo(polygon[0].x, polygon[0].y);
+        polygon.forEach((point) => {
+          ctx.lineTo(point.x, point.y);
+        });
+        ctx.strokeStyle = "red";
+        ctx.stroke();
+      }
+
+      if (polygon.length > 2 && isCloseToStart(polygon[polygon.length - 1])) {
+        ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+        ctx.beginPath();
+        polygon.forEach((point, index) => {
+          if (index === 0) {
+            ctx.moveTo(point.x, point.y);
+          } else {
+            ctx.lineTo(point.x, point.y);
+          }
+        });
+        ctx.closePath();
+        ctx.fill();
+        setIsDone(true);
+        // Crop and display the resulting image
+        cropAndDisplayImage();
+      }
+    }
+  }, [image, polygon, drawImage, isCloseToStart, cropAndDisplayImage]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (image) {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext("2d");
+        // const x = image.width;
+        // const y = image.height;
+        const { clientWidth, clientHeight } = canvasContRef.current;
+        var displayWidth = clientWidth;
+        var displayHeight = clientHeight;
+        console.log("resize");
+        console.log(clientWidth);
+        console.log(clientHeight);
+        ctx.canvas.width = displayWidth;
+        ctx.canvas.height = displayHeight;
+        const div1 = div1Ref.current;
+        const div2 = div2Ref.current;
+
+        // Ensure both elements are available
+        if (div1 && div2) {
+          // Get bounding client rect of div1
+          const div1Rect = div1.getBoundingClientRect();
+          const marginLeft = div1Rect.left;
+          console.log("Margin-left of div1:", marginLeft);
+          div2.style.left = "-" + marginLeft + "px";
+          const windoheight = window.innerHeight;
+          const marginTop = 60 + (windoheight - 60 - 490) / 2;
+          div2.style.top = "-" + marginTop + "px";
+        }
+        setPolygon([]);
+        drawImage();
+      }
+    };
+
+    // Add event listener for resize
+    window.addEventListener("resize", handleResize);
+  }, [image, drawImage]);
+
+  useEffect(() => {
+    if (image) {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      // const x = image.width;
+      // const y = image.height;
+      const { clientWidth, clientHeight } = canvasContRef.current;
+      var displayWidth = clientWidth;
+      var displayHeight = clientHeight;
+      console.log(clientWidth);
+      console.log(clientHeight);
+      ctx.canvas.width = displayWidth;
+      ctx.canvas.height = displayHeight;
+      // JavaScript code to calculate the position of the pop-up
+      // Step 1: Get margin-left of div1
+      const div1 = div1Ref.current;
+      const div2 = div2Ref.current;
+
+      // Ensure both elements are available
+      if (div1 && div2) {
+        // Get bounding client rect of div1
+        const div1Rect = div1.getBoundingClientRect();
+        const marginLeft = div1Rect.left;
+        console.log("Margin-left of div1:", marginLeft);
+        div2.style.left = "-" + marginLeft + "px";
+        const windoheight = window.innerHeight;
+        const marginTop = 60 + (windoheight - 60 - 490) / 2;
+        div2.style.top = "-" + marginTop + "px";
+      }
+
+      const comp1 = document.querySelector(".cropcomp3");
+      const comp2 = document.querySelector(".cropcomp2");
+      comp1.style.zIndex = 0;
+      comp2.style.zIndex = 0;
+      setPolygon([]);
+      drawImage();
+    }
+  }, [image, drawImage]);
+
+  useEffect(() => {
+    drawPoints();
+  }, [polygon, drawPoints]);
+
+  const loadImage = (input) => {
+    const file = input.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const img = new Image();
+        img.src = e.target.result;
+        img.onload = () => setImage(img);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const onCanvasClick = (event) => {
+    const rect = event.target.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    setPolygon((prevPolygon) => [...prevPolygon, { x, y }]);
   };
 
   function sendToServer(dataURL) {

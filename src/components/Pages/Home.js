@@ -48,9 +48,7 @@ const Home = () => {
           treatments.
         </p>
         <Link to="/prediction">
-          <button className="button-30" role="button">
-            Predict Now!!
-          </button>
+          <button className="button-30">Predict Now!!</button>
         </Link>
       </div>
     </div>

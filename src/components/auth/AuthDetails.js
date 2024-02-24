@@ -1,4 +1,4 @@
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Routing from "../Pages/Routes";

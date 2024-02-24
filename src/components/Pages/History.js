@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { db } from "../../firebase";
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { getUserEmail } from "../auth/UserEmail";
@@ -7,9 +7,9 @@ import "./history.css";
 const History = () => {
   const [historyData, setHistoryData] = useState([]);
 
-  async function fetchHistoryData() {
+  const fetchHistoryData = useCallback(async () => {
     const email = getUserEmail();
-    const historyRef = collection(db, email); // Replace with your collection name
+    const historyRef = collection(db, email);
     const querySnapshot = await getDocs(historyRef);
     const data = [];
     querySnapshot.forEach((doc) => {
@@ -24,7 +24,6 @@ const History = () => {
         }
       };
 
-      // Convert values for specified properties
       [
         "cjcnn",
         "cjknn",
@@ -40,19 +39,19 @@ const History = () => {
       });
       const floatValue = parseFloat(datadoc["yes"]);
       datadoc["yes"] = floatValue < 50 ? "Non-Anemic" : "Anemic";
-      //   console.log(doc);
-      data.push({ ...datadoc }); // Add timestamp as property
+      data.push({ ...datadoc });
     });
     data.sort((a, b) => b.time.toDate() - a.time.toDate());
     return data;
-  }
-  const loadHistory = async () => {
+  }, []);
+
+  const loadHistory = useCallback(async () => {
     const data = await fetchHistoryData();
     setHistoryData(data);
-  };
+  }, [fetchHistoryData]);
   useEffect(() => {
     loadHistory();
-  }, []);
+  }, [loadHistory]);
 
   const deleteHistoryEntry = async (timestamp) => {
     const email = getUserEmail();
