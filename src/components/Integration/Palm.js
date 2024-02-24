@@ -254,7 +254,7 @@ const Palm = ({ setpm, setf, setimg }) => {
   };
   function sendToServer(dataURL) {
     // Send dataURL to server route /palm
-    fetch(" http://127.0.0.1:5000/palm", {
+    fetch(" https://anemianetserver.onrender.com/palm", {
       method: "POST",
       body: JSON.stringify({ image_data: dataURL }),
       headers: {

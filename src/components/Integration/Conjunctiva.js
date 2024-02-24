@@ -257,7 +257,7 @@ const Conjunctiva = ({ setcj, setf, setimg }) => {
 
   function sendToServer(dataURL) {
     // Send dataURL to server route /conjunctiva
-    fetch(" http://127.0.0.1:5000/conjunctiva", {
+    fetch(" https://anemianetserver.onrender.com/conjunctiva", {
       method: "POST",
       body: JSON.stringify({ image_data: dataURL }),
       headers: {
