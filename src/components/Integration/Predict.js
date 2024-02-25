@@ -90,7 +90,9 @@ const Predict = () => {
       fbcontRef.current.style.display = "flex"; // Show .fbcont
     }
   };
-  document.addEventListener("mouseup", handleMouseUp);
+  useEffect(() => {
+    document.addEventListener("mouseup", handleMouseUp);
+  }, []);
 
   return (
     <div className="predict">

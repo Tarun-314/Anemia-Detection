@@ -1,18 +1,20 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import "./styles.css";
-import { RiAddCircleLine } from "react-icons/ri";
-import { FaUndo, FaCheck, FaTimes } from "react-icons/fa";
-const FingerNail = ({ setfn, setf, setimg }) => {
-  const [image, setImage] = useState(null);
-  const [polygon, setPolygon] = useState([]);
-  const [croppedImage, setCroppedImage] = useState(null);
-  const [IsDone, setIsDone] = useState(false);
-  const [IsPred, setIsPred] = useState(false);
-  const [Data, setData] = useState("");
-  const canvasRef = useRef(null);
-  const canvasContRef = useRef(null);
-  const div2Ref = useRef(null);
+import React, { useState, useRef, useEffect, useCallback } from "react"; // Importing React and its hooks
+import "./styles.css"; // Importing CSS file for styling
+import { RiAddCircleLine } from "react-icons/ri"; // Importing icon component
+import { FaUndo, FaCheck, FaTimes } from "react-icons/fa"; // Importing icon components
 
+const FingerNail = ({ setfn, setf, setimg }) => {
+  const [image, setImage] = useState(null); // State variable for the selected image
+  const [polygon, setPolygon] = useState([]); // State variable for the drawn polygon points
+  const [croppedImage, setCroppedImage] = useState(null); // State variable for the cropped image
+  const [IsDone, setIsDone] = useState(false); // State variable to track if polygon drawing is done
+  const [IsPred, setIsPred] = useState(false); // State variable to track if prediction is made
+  const [Data, setData] = useState(""); // State variable to store image data URL
+  const canvasRef = useRef(null); // Ref for canvas element
+  const canvasContRef = useRef(null); // Ref for canvas container element
+  const div2Ref = useRef(null); // Ref for div2 element
+
+  // Function to draw the image on the canvas
   const drawImage = useCallback(() => {
     if (image) {
       const ctx = canvasRef.current.getContext("2d");
@@ -24,6 +26,7 @@ const FingerNail = ({ setfn, setf, setimg }) => {
     }
   }, [image]);
 
+  // Function to check if the point is close to the starting point of the polygon
   const isCloseToStart = useCallback(
     (point) => {
       const start = polygon[0];
@@ -36,22 +39,12 @@ const FingerNail = ({ setfn, setf, setimg }) => {
     [polygon]
   );
 
+  // Function to crop and display the image based on the drawn polygon
   const cropAndDisplayImage = useCallback(() => {
-    // const x = image.width;
-    // const y = image.height;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     var displayWidth = ctx.canvas.width;
     var displayHeight = ctx.canvas.height;
-    // if (x > y) {
-    //   const aspectRatio = x / y;
-    //   displayWidth = 1000;
-    //   displayHeight = 1000 * aspectRatio;
-    // } else {
-    //   const aspectRatio = y / x;
-    //   displayWidth = 700 * aspectRatio;
-    //   displayHeight = 700;
-    // }
 
     const minX = Math.min(...polygon.map((point) => point.x));
     const minY = Math.min(...polygon.map((point) => point.y));
@@ -92,7 +85,7 @@ const FingerNail = ({ setfn, setf, setimg }) => {
     const newCanvas1 = document.createElement("canvas");
     newCanvas1.width = width;
     newCanvas1.height = height;
-
+    //re-sizing cropped image
     const newContext1 = newCanvas1.getContext("2d");
     newContext1.putImageData(imageData, 0, 0);
     const newCanvas2 = document.createElement("canvas");
@@ -101,6 +94,7 @@ const FingerNail = ({ setfn, setf, setimg }) => {
     const newContext2 = newCanvas2.getContext("2d");
     newContext2.drawImage(newContext1.canvas, 0, 0, 224, 224);
     newContext2.fillStyle = "black";
+    //converting image to url
     const dataURL = newCanvas2.toDataURL("image/png");
     setData(dataURL);
     const newImage = new Image();
@@ -109,31 +103,32 @@ const FingerNail = ({ setfn, setf, setimg }) => {
     setCroppedImage(newImage);
   }, [image, polygon]);
 
+  // Function to draw points and polygon on the canvas
   const drawPoints = useCallback(() => {
     if (image) {
       const ctx = canvasRef.current.getContext("2d");
       const radius = 2;
-      ctx.fillStyle = "red";
+      ctx.fillStyle = "green";
 
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       drawImage();
-
+      //plotting points
       polygon.forEach((point) => {
         ctx.beginPath();
         ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
         ctx.fill();
       });
-
+      //connecting points
       if (polygon.length > 1) {
         ctx.beginPath();
         ctx.moveTo(polygon[0].x, polygon[0].y);
         polygon.forEach((point) => {
           ctx.lineTo(point.x, point.y);
         });
-        ctx.strokeStyle = "red";
+        ctx.strokeStyle = "green";
         ctx.stroke();
       }
-
+      //filling if clip path is closed
       if (polygon.length > 2 && isCloseToStart(polygon[polygon.length - 1])) {
         ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
         ctx.beginPath();
@@ -153,6 +148,7 @@ const FingerNail = ({ setfn, setf, setimg }) => {
     }
   }, [image, polygon, drawImage, isCloseToStart, cropAndDisplayImage]);
 
+  // useEffect to handle resizing of the canvas
   useEffect(() => {
     const handleResize = () => {
       if (image) {
@@ -163,9 +159,6 @@ const FingerNail = ({ setfn, setf, setimg }) => {
         const { clientWidth, clientHeight } = canvasContRef.current;
         var displayWidth = clientWidth;
         var displayHeight = clientHeight;
-        console.log("resize");
-        console.log(clientWidth);
-        console.log(clientHeight);
         ctx.canvas.width = displayWidth;
         ctx.canvas.height = displayHeight;
         const div2 = div2Ref.current;
@@ -185,17 +178,14 @@ const FingerNail = ({ setfn, setf, setimg }) => {
     window.addEventListener("resize", handleResize);
   }, [image, drawImage]);
 
+  // useEffect to initialize canvas on image load
   useEffect(() => {
     if (image) {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
-      // const x = image.width;
-      // const y = image.height;
       const { clientWidth, clientHeight } = canvasContRef.current;
       var displayWidth = clientWidth;
       var displayHeight = clientHeight;
-      console.log(clientWidth);
-      console.log(clientHeight);
       ctx.canvas.width = displayWidth;
       ctx.canvas.height = displayHeight;
 
@@ -216,10 +206,12 @@ const FingerNail = ({ setfn, setf, setimg }) => {
     }
   }, [image, drawImage]);
 
+  // useEffect to update canvas on polygon change
   useEffect(() => {
     drawPoints();
   }, [polygon, drawPoints]);
 
+  // Function to load selected image
   const loadImage = (input) => {
     const file = input.files[0];
     if (file) {
@@ -233,6 +225,7 @@ const FingerNail = ({ setfn, setf, setimg }) => {
     }
   };
 
+  // Function to handle click event on canvas
   const onCanvasClick = (event) => {
     const rect = event.target.getBoundingClientRect();
     const x = event.clientX - rect.left;
@@ -241,6 +234,7 @@ const FingerNail = ({ setfn, setf, setimg }) => {
     setPolygon((prevPolygon) => [...prevPolygon, { x, y }]);
   };
 
+  // Function to send cropped image data to server for prediction
   function sendToServer(dataURL) {
     // Send dataURL to server route /finger nail
     fetch(" https://anemianetserver.onrender.com/finger_nail", {
@@ -270,6 +264,8 @@ const FingerNail = ({ setfn, setf, setimg }) => {
         console.error("Error:", error);
       });
   }
+
+  // Function to undo the last drawn point on canvas
   const undoLastPoint = () => {
     setPolygon((prevPolygon) => {
       const newPolygon = [...prevPolygon];
@@ -277,6 +273,8 @@ const FingerNail = ({ setfn, setf, setimg }) => {
       return newPolygon;
     });
   };
+
+  // Function to handle click on "Done" button on canvas
   const handleDoneClick = () => {
     setImage(null);
     const comp1 = document.querySelector(".cropcomp1");
@@ -285,6 +283,8 @@ const FingerNail = ({ setfn, setf, setimg }) => {
     comp2.style.zIndex = 1;
     setIsDone(false);
   };
+
+  // Function to clear the cropped image
   const claercrop = () => {
     setCroppedImage(null);
     setIsPred(false);
@@ -293,6 +293,8 @@ const FingerNail = ({ setfn, setf, setimg }) => {
     comp1.style.boxShadow =
       " rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,rgba(0, 0, 0, 0.3) 0px 30px 60px -30px";
   };
+
+  // Function to clear the image crop popup
   const clearpopup = () => {
     setCroppedImage(null);
     setImage(null);
@@ -302,6 +304,8 @@ const FingerNail = ({ setfn, setf, setimg }) => {
     comp1.style.zIndex = 1;
     comp2.style.zIndex = 1;
   };
+
+  // Function to trigger prediction
   const Prediction = () => {
     if (!image && croppedImage && !IsPred) {
       sendToServer(Data);
@@ -312,16 +316,17 @@ const FingerNail = ({ setfn, setf, setimg }) => {
     }
   };
 
+  // Function to display predictions
   const displayPredictions = (data) => {
     const cnnPrediction = document.getElementById("cnnfn");
     if (parseFloat(data.cnn) < 0.5) {
       cnnPrediction.style.color = "red";
       cnnPrediction.textContent =
-        "CNN - Anemic" + ((parseFloat(data.cnn) - 1) * 100).toFixed(2) + "%";
+        "CNN - Anemic " + ((parseFloat(data.cnn) - 1) * 100).toFixed(2) + "%";
     } else {
       cnnPrediction.style.color = "green";
       cnnPrediction.textContent =
-        "CNN - Non-Anemic" + (parseFloat(data.cnn) * 100).toFixed(2) + "%";
+        "CNN - Non-Anemic-" + (parseFloat(data.cnn) * 100).toFixed(2) + "%";
     }
     const knnPrediction = document.getElementById("knnfn");
     if (parseFloat(data.knn) < 0.5) {
@@ -344,6 +349,7 @@ const FingerNail = ({ setfn, setf, setimg }) => {
   return (
     <div className="cropcomp2" id="crop-container">
       <h2>Finger Nail</h2>
+      {/* Conditionally rendering file upload box */}
       {!image && !croppedImage && (
         <div
           className="file-upload-box"
@@ -353,6 +359,7 @@ const FingerNail = ({ setfn, setf, setimg }) => {
           <p className="file-text">
             {image ? "file chosen" : "No file chosen"}
           </p>
+          {/* Hidden file input triggered by clicking on the file-upload-box */}
           <input
             type="file"
             id="file-input2"
@@ -361,6 +368,7 @@ const FingerNail = ({ setfn, setf, setimg }) => {
           />
         </div>
       )}
+      {/* Render canvas if image is selected */}
       {image && (
         <div className="canvas-center" ref={div2Ref}>
           <div
@@ -368,12 +376,14 @@ const FingerNail = ({ setfn, setf, setimg }) => {
             id="canvas-container"
             ref={canvasContRef}
           >
+            {/* Canvas for drawing */}
             <canvas
               ref={canvasRef}
               onClick={onCanvasClick}
               style={{ cursor: "crosshair" }}
             ></canvas>
 
+            {/* Buttons for undo, done, and close */}
             <button onClick={undoLastPoint} className="btn1">
               <FaUndo />
             </button>
@@ -389,25 +399,30 @@ const FingerNail = ({ setfn, setf, setimg }) => {
         </div>
       )}
 
+      {/* Render cropped image */}
       {!image && croppedImage && (
         <div className="cropped-image">
           {/* <h3>Cropped Image:</h3> */}
           <img src={croppedImage.src} alt="Cropped" />
 
+          {/* Button to clear cropped image */}
           <button onClick={claercrop} className="btn3">
             <FaTimes />
           </button>
         </div>
       )}
+
+      {/* Render predictions if prediction is made */}
       {IsPred && !image && croppedImage && (
         <div className="predictions">
           <h3>Predictions</h3>
-          <h4 id="cnnfn">CNN</h4>
-          <h4 id="knnfn">KNN</h4>
-          <h4 id="rffn">RF</h4>
+          <h4 id="cnnfn">CNN - Loading...</h4>
+          <h4 id="knnfn">KNN - Loading...</h4>
+          <h4 id="rffn">RF - Loading...</h4>
         </div>
       )}
 
+      {/* Button to trigger prediction */}
       <button className="pbtn" onClick={Prediction}>
         Predict
       </button>

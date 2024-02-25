@@ -16,12 +16,8 @@
   height: 480px;
   padding: 30px;
   animation: rotateX 0.7s ease-in-out;
-  /* transform-origin: right; */
   box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
     rgb(204, 219, 232) -3px -3px 6px 1px inset;
-  /* box-shadow: rgba(0, 0, 0, 0.56) 10px 22px 20px 4px; */
-  /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; */
   border-radius: 15px;
 
   background-color: rgb(209 255 249 / 69%);
@@ -29,11 +25,9 @@
 
 @keyframes rotateX {
   0% {
-    /* transform: rotateX(180deg); */
     opacity: 0;
   }
   100% {
-    /* transform: rotateX(0deg); */
     opacity: 1;
   }
 }

@@ -59,11 +59,6 @@ const Result = ({ data }) => {
             on machine learning and deep learning models trained on images of
             conjunctiva, palm, and fingernails. It is not a substitute for
             professional medical advice, diagnosis, or treatment.
-            {/* The accuracy of
-            the predictions may vary, and users should not rely solely on the
-            results for healthcare decisions.If you have concerns about your
-            health, consult with a licensed healthcare professional for proper
-            diagnosis and treatment. */}
           </p>
           <p style={{ textAlign: "justify", paddingRight: "5px" }}>
             By using this anemia detection tool, you acknowledge and agree to

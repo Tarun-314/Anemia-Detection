@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-// Your web app's Firebase configuration, replace it with your project keys
+// web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCCDEy9UYm4uIyZnjqs_Mmt_L-eZFV8j18",
   authDomain: "anemia-detection-2e1c6.firebaseapp.com",

@@ -13,7 +13,6 @@ const Home = () => {
               shortage of red blood cells or hemoglobin, impacting the blood's
               ability to carry oxygen efficiently.
             </p>
-            {/* <p className='p2'>Causes: Nutritional deficiencies (iron, vitamin B12, folate), chronic diseases (kidney disease, cancer), genetic conditions (sickle cell anemia, thalassemia), and blood loss from injury or menstruation.</p> */}
             <p className="p3">
               <span style={{ fontSize: "1.2em" }}>Symptoms:</span> Fatigue,
               weakness, shortness of breath, dizziness, pale skin, cold hands
