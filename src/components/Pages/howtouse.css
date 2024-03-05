@@ -11,7 +11,7 @@
 .scroll-container {
   position: relative;
   height: 50%;
-  max-height: 500px;
+  max-height: 400px;
   display: flex;
   padding: 0px 3.5vw;
   background-color: #ebf3f9;
