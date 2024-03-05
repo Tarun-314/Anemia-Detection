@@ -6,6 +6,8 @@ import "./predict.css";
 import Result from "./Result";
 import { getUserEmail } from "../auth/UserEmail";
 import { db } from "../../firebase";
+import { MdInfoOutline } from "react-icons/md";
+import { Link } from "react-router-dom";
 import {
   collection,
   addDoc,
@@ -23,6 +25,7 @@ const Predict = () => {
   const [Pm, setPm] = useState(false);
   const [Pmimg, setPmimg] = useState("");
   const [Final, setFinal] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const [Data, setData] = useState(null);
   const [Features, setFeatures] = useState(Array(9).fill("0"));
   const finalprediction = () => {
@@ -96,6 +99,23 @@ const Predict = () => {
 
   return (
     <div className="predict">
+      <div className="right-container">
+        <Link to="/howtouse">
+          <button
+            className="right-container-button"
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+          >
+            <span className={`long-text ${hovered ? "show-long-text" : ""}`}>
+              How to use
+            </span>
+            <span className="short-text">
+              <MdInfoOutline id="icon-chat" />
+            </span>
+          </button>
+        </Link>
+      </div>
+
       {!Final && (
         <div className="prediction">
           <Conjunctiva
