@@ -6,6 +6,7 @@ import { MdDelete } from "react-icons/md";
 import "./history.css";
 const History = () => {
   const [historyData, setHistoryData] = useState([]);
+  const [load, setLoad] = useState(true);
 
   const fetchHistoryData = useCallback(async () => {
     const email = getUserEmail();
@@ -38,7 +39,9 @@ const History = () => {
         datadoc[property] = convertValue(datadoc[property]);
       });
       const floatValue = parseFloat(datadoc["yes"]);
-      datadoc["yes"] = floatValue < 50 ? "Non-Anemic" : "Anemic";
+      const am = "Anemic - " + datadoc["yes"];
+      const nam = "Non-Anemic - " + datadoc["no"];
+      datadoc["yes"] = floatValue < 50 ? nam : am;
       data.push({ ...datadoc });
     });
     data.sort((a, b) => b.time.toDate() - a.time.toDate());
@@ -48,6 +51,7 @@ const History = () => {
   const loadHistory = useCallback(async () => {
     const data = await fetchHistoryData();
     setHistoryData(data);
+    setLoad(false);
   }, [fetchHistoryData]);
   useEffect(() => {
     loadHistory();
@@ -56,11 +60,18 @@ const History = () => {
   const deleteHistoryEntry = async (timestamp) => {
     const email = getUserEmail();
     await deleteDoc(doc(db, email, timestamp));
+    setLoad(true);
+    setHistoryData([]);
     loadHistory();
   };
 
   return (
     <div className="history-container">
+      {load && (
+        <h2 key="load" style={{ zIndex: "2" }}>
+          Loading History...
+        </h2>
+      )}
       {historyData.map((entry) => (
         <div
           key={entry.DocId}

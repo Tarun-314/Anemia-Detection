@@ -36,7 +36,7 @@ const AboutUs = () => {
 
   return (
     <div className="about-us-container">
-      <div class="container">
+      <div className="container">
         <div class="container-left" ref={containerLeftRef}>
           <div className="abt1">
             <h1>Empowered by Knowledge: Dive into Anemia Net</h1>
