@@ -1,4 +1,7 @@
-import { signInWithEmailAndPassword } from "firebase/auth"; // Importing function to sign in with email and password from Firebase
+import {
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth"; // Importing function to sign in with email and password from Firebase
 import React, { useState, useRef } from "react"; // Importing React and its hooks
 import { auth } from "../../firebase"; // Importing authentication instance from Firebase
 import "./Auth.css"; // Importing CSS file for styling
@@ -26,6 +29,36 @@ const SignIn = ({ updateState }) => {
           showErrmsg.current.textContent = "";
         }, 4000);
       });
+  };
+
+  const forgotPass = async () => {
+    try {
+      showErrmsg.current.textContent =
+        "Password reset email sent successfully!"; // Displaying message
+      showErrmsg.current.style.width = "auto";
+      showErrmsg.current.style.height = "auto";
+      showErrmsg.current.style.padding = "0.5rem 1.5rem";
+      setTimeout(() => {
+        // Setting a timeout to hide the error message after 4 seconds
+        showErrmsg.current.style.width = "0px";
+        showErrmsg.current.style.height = "0px";
+        showErrmsg.current.style.padding = "0";
+        showErrmsg.current.textContent = "";
+      }, 4000);
+      await sendPasswordResetEmail(auth, email);
+    } catch (error) {
+      showErrmsg.current.textContent = error.message; // Displaying error message
+      showErrmsg.current.style.width = "auto";
+      showErrmsg.current.style.height = "auto";
+      showErrmsg.current.style.padding = "0.5rem 1.5rem";
+      setTimeout(() => {
+        // Setting a timeout to hide the error message after 4 seconds
+        showErrmsg.current.style.width = "0px";
+        showErrmsg.current.style.height = "0px";
+        showErrmsg.current.style.padding = "0";
+        showErrmsg.current.textContent = "";
+      }, 4000);
+    }
   };
 
   return (
@@ -65,7 +98,7 @@ const SignIn = ({ updateState }) => {
           </label>
         </section>
         <section>
-          <p>Forgot password</p>
+          <p onClick={forgotPass}>Forgot password</p>
         </section>
       </div>
       <div className="input-submit">
